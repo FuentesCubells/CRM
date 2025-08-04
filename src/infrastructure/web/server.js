@@ -8,7 +8,8 @@ class Server {
         this.port = process.env.SERVER_PORT || 3000;
 
         this.paths = {
-            reservations: '/api/reservations'
+            reservations: '/api/reservations',
+            auth: '/api/auth',
         }
 
         this.connectDB();
@@ -31,9 +32,8 @@ class Server {
     }
 
     routes() {
-
         this.app.use(this.paths.reservations, require('./routes/reservations'));
-
+        this.app.use(this.paths.auth, require('./routes/auth'));
     }
 
     listen() {
