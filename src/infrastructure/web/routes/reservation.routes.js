@@ -1,7 +1,51 @@
 const express = require('express');
-const { createReservation, editFullReservation, eraseReservation, getReservation, getAllReservations, getUnavailableDates } = require('../../../application/reservationService');
+const authRepo = require("../../db/auth/auth.repo");
+
+const { createReservation, editFullReservation, eraseReservation, getReservation, getAllReservations, getUnavailableDates } = require('../../../application/reservation.service');
 
 const router = express.Router();
+
+router.post('/create-reservation', async (req, res) => {
+  try {
+    const { client, address, booking_details, flags } = req.body;
+
+    // Validación de datos obligatorios
+    if (!client || !address || !booking_details) {
+      return res.status(400).json({ error: 'Faltan datos obligatorios' });
+    }
+
+    let user;
+
+    if (flags?.hasAuth) {
+      user = await authRepo.findByEmail(client.email);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+    } else {
+      user = await authRepo.save(client);
+    }
+
+    // Crear nuevo objeto con datos completos
+    const data = {
+      client: user,
+      address: {
+        ...address,
+        user_id: user.id,
+      },
+      booking_details: {
+        ...booking_details,
+        user_id: user.id,
+      },
+    };
+
+    const result = await createReservation(data);
+
+    res.status(201).json({ message: 'Created Reservation', id: result });
+  } catch (err) {
+    res.status(400).json({ error: err.message || 'Error en la reserva' });
+  }
+});
+
 
 router.get('/', async (req, res) => {
   try {
@@ -30,14 +74,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/create-reservation', async (req, res) => {
-  try {
-    const result = await createReservation(req.body);
-    res.status(201).json({ message: 'Created Reservation', id: result.id });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+
 
 router.put('/edit-reservation/:id', async (req, res) => {
   try {

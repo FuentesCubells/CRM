@@ -1,9 +1,13 @@
-const db = require('./mysql');
+const db = require('../mysql');
 
 
 async function save(data) {
-    const [result] = await db.query('INSERT INTO users SET ?', data);
-    return result.insertId;
+    const [user] = await db.query('INSERT INTO users SET ?', data);
+    const result = {
+      id: user.insertId,
+      ...data
+    }
+    return result;
 }
 
 async function findByEmail(email) {

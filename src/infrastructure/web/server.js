@@ -32,8 +32,8 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.reservations, require('./routes/reservations'));
-        this.app.use(this.paths.auth, require('./routes/auth'));
+        this.app.use(this.paths.reservations, require("./routes/reservation.routes"));
+        this.app.use(this.paths.auth, require("./routes/auth.routes"));
     }
 
     listen() {

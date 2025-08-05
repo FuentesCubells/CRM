@@ -1,5 +1,5 @@
-const Auth = require('../domain/auth');
-const authRepo = require('../infrastructure/db/authRepo');
+const Auth = require("../domain/auth/auth.domain");
+const authRepo = require("../infrastructure/db/auth/auth.repo");
 const bcrypt = require('bcryptjs');
 
 async function registerUser(data) {
@@ -59,7 +59,6 @@ async function changePassword(data) {
     await authRepo.updatePassword(user.id, newHashedPassword);
     return { message: 'Contraseña actualizada correctamente' };
 }
-
 
 async function hashPassword(password) {
     const salt = await bcrypt.genSalt(10);
