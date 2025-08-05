@@ -28,6 +28,16 @@ async function createReservation(data) {
   return { reservation_id: reservationId };
 }
 
+async function getReservations(id) {
+  const result = await reservationRepo.getClientReservations(id);
+  return result ? result : [];
+}
+
+async function getReservationById(id) {
+  const result = await reservationRepo.getById(id);
+  return result ? result : [];
+}
+
 // async function getReservation(id) {
 //   const result = await reservationRepo.getById(id);
 //   return result.length > 0 ? result : [];
@@ -79,4 +89,4 @@ async function createReservation(data) {
 //   return unavailableDates;
 // }
 
-module.exports = { createReservation };
+module.exports = { createReservation, getReservations, getReservationById };

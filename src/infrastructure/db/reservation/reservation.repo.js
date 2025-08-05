@@ -5,5 +5,15 @@ async function save(data) {
     return result.insertId;
 }
 
-module.exports = { save };
+async function getClientReservations(clientId) {
+    const [rows] = await db.query('SELECT * FROM reservations WHERE user_id = ?', [clientId]);
+    return rows;
+}
+
+async function getById(id) {
+    const [rows] = await db.query('SELECT * FROM reservations WHERE id = ?', [id]);
+    return rows[0];
+}
+
+module.exports = { save, getClientReservations, getById };
 

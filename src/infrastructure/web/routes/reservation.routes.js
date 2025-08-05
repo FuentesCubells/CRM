@@ -1,7 +1,8 @@
 const express = require('express');
 const authRepo = require("../../db/auth/auth.repo");
 
-const { createReservation, editFullReservation, eraseReservation, getReservation, getAllReservations, getUnavailableDates } = require('../../../application/reservation.service');
+const { createReservation, getReservations, getReservationById, editFullReservation, eraseReservation, getReservation, getAllReservations, getUnavailableDates } = require('../../../application/reservation.service');
+const { route } = require('./auth.routes');
 
 const router = express.Router();
 
@@ -46,6 +47,33 @@ router.post('/create-reservation', async (req, res) => {
   }
 });
 
+//It has to be a post because it needs the client id
+//There should be a middleware to authenticate the user
+//and get the client id from the token
+//This is a temporary solution
+router.post('/client-reservation-list', async (req, res) => {
+  try {
+
+    //Esto habría que cambiarlo por un middleware de autenticación
+    if (!req.body.client || !req.body.client.id) {
+      return res.status(400).json({ error: 'Faltan datos del cliente' });
+    }
+    const result = await getReservations(req.body.client.id);
+    res.status(200).json({ message: 'Client Reservations', data: result });
+
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'Error fetching client reservations' }); 
+  }
+});
+router.get('/client-reservation-list/:id', async (req, res) => {
+  try {
+    const result = await getReservationById(req.params.id);
+    res.status(200).json({ message: 'Client Reservation Detail', data: result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+ 
 
 router.get('/', async (req, res) => {
   try {
