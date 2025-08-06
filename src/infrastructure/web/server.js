@@ -1,4 +1,6 @@
 const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const dbPool = require('../db/mysql');
 
 class Server {
@@ -17,7 +19,6 @@ class Server {
         this.routes();
     }
 
-
     async connectDB() {
         try {
             this.dbConnection = await dbPool.getConnection();
@@ -27,8 +28,21 @@ class Server {
     }
 
     middlewares() {
+        const limiter = rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100,
+            standardHeaders: true,
+            legacyHeaders: false,
+            message: {
+                status: 429,
+                error: 'Demasiadas peticiones desde esta IP. Intenta más tarde.'
+            }
+        });
+
+        this.app.use(limiter);
         // this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(helmet());
     }
 
     routes() {
