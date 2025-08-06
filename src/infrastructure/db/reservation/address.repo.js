@@ -5,8 +5,8 @@ async function save(data) {
     return result.insertId;
 }
 
-async function update(user_id, data) {
-    const [result] = await db.query('UPDATE addresses SET ? WHERE user_id = ?', [data, user_id]);
+async function update(user_id, reservation_code, data) {
+    const [result] = await db.query('UPDATE addresses SET ? WHERE user_id = ? AND reservation_code = ?', [data, user_id, reservation_code]);
     return result.affectedRows > 0;
 }
 

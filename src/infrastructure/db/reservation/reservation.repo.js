@@ -20,10 +20,15 @@ async function getClientReservations(clientId) {
     return rows;
 }
 
-async function getById(user_id, reservationId) {
-    const [rows] = await db.query('SELECT * FROM reservations WHERE id = ? AND user_id = ?', [reservationId, user_id]);
+async function getById(user_id, reservationId, reservation_code) {
+    const [rows] = await db.query('SELECT * FROM reservations WHERE id = ? AND user_id = ? AND reservation_code = ?', [reservationId, user_id, reservation_code]);
     return rows[0];
 }
 
-module.exports = { save, update, erase, getClientReservations, getById };
+async function getAllReservations() {
+    const [rows] = await db.query('SELECT * FROM reservations');
+    return rows;
+}
+
+module.exports = { save, update, erase, getClientReservations, getById, getAllReservations };
 

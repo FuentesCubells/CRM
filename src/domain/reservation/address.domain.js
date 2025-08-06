@@ -3,13 +3,14 @@
 
 class Address {
 
-    constructor(data, user_id) {
+    constructor(data, user_id, uuid) {
         this.user_id = user_id;
         this.address = data.address;
         this.country = data.country;
         this.city = data.city;
         this.state = data.state;
         this.zip = data.zip;
+        this.reservation_code = uuid;
     }
 
     validate() {

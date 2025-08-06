@@ -12,8 +12,6 @@ const router = express.Router();
 // and if the client exists in the database
 // This is a temporary solution, it should be done in the auth middleware
 // The front should manage firts the registration of the client
-
-
 router.post('/create-reservation', async (req, res) => {
   try {
     // Validación de datos obligatorios
@@ -29,7 +27,6 @@ router.post('/create-reservation', async (req, res) => {
   }
 });
 
-
 // Client reservation routes
 // These routes are protected by the authMiddleware and requireAuth middleware
 // They ensure that only authenticated users can access their own reservations
@@ -44,7 +41,7 @@ router.post('/client-reservation-list', authMiddleware, requireAuth, async (req,
 });
 router.get('/client-reservation-list/:id', authMiddleware, requireAuth, async (req, res) => {
   try {
-    const result = await getReservationById(req.user.id, req.params.id);
+    const result = await getReservationById(req.user.id, req.params.id, req.body.reservation_code);
     res.status(200).json({ message: 'Client Reservation Detail', data: result });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -58,63 +55,27 @@ router.patch('/edit-reservation/:id', authMiddleware, requireAuth, async (req, r
     res.status(400).json({ error: err.message });
   }
 });
+
+// Admin reservation routes
+// These routes are protected by the authMiddleware and requireAdmin middleware
+// They ensure that only admins can access all reservations
+router.get('/all-reservations', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const result = await getAllReservations();
+    res.status(200).json({ message: 'All Reservations', data: result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 router.delete('/erase-reservation/:id', authMiddleware, requireAdmin, async (req, res) => {
   try {
-    const result = await eraseReservation(req.body.client.user_id, req.params.id);
+    const result = await eraseReservation(req.body.client.user_id, req.body.reservation_code, req.params.id);
     res.status(200).json({ message: 'Erased Reservation', result: result });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-
-
-// router.get('/', async (req, res) => {
-//   try {
-//     const result = await getAllReservations();
-//     res.status(200).json({ message: 'Reservations', data: result });
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// router.get('/unavailable-dates', async (req, res) => {
-//   try {
-//     const result = await getUnavailableDates();
-//     res.status(200).json({ message: 'Unavailable Dates', data: result });
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const result = await getReservation(req.params.id);
-//     res.status(200).json({ message: 'Reservation', data: result });
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-
-
-// router.put('/edit-reservation/:id', async (req, res) => {
-//   try {
-//     const result = await editFullReservation(req.params.id, req.body);
-//     res.status(200).json({ message: 'Edited full Reservation', data: result });
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// router.delete('/erase-reservation/:id', async (req, res) => {
-//   try {
-//     const result = await eraseReservation(req.params.id);
-//     res.status(200).json({ message: 'Erased Reservation', result: [] });
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// });
 
 
 module.exports = router;
