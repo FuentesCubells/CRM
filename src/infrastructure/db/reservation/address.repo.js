@@ -10,9 +10,14 @@ async function update(user_id, data) {
     return result.affectedRows > 0;
 }
 
+async function erase(user_id) {
+    const [result] = await db.query('DELETE FROM addresses WHERE user_id = ?', [user_id]);
+    return result.affectedRows > 0;
+}
+
 async function findByUserId(userId) {
     const [rows] = await db.query('SELECT * FROM addresses WHERE user_id = ?', [userId]);
     return rows[0];
 }
 
-module.exports = { save, update, findByUserId };
+module.exports = { save, update, erase, findByUserId };

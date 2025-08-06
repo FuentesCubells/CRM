@@ -7,7 +7,7 @@ class Auth {
         this.email = data.email;
         this.phone = data.phone;
         this.password_hash = data.password;
-        this.role = data.role || 'client';
+        this.role = 'client';
         this.created_at = new Date();
     }
 }

@@ -19,7 +19,11 @@ function authMiddleware(req, res, next) {
 
 function createToken(user) {
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { 
+            id: user.id, 
+            email: user.email,
+            role: user.role
+        },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
     );
@@ -32,5 +36,11 @@ function requireAuth(req, res, next) {
     }
     next();
 }
+function requireAdmin(req, res, next) {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Acceso denegado: se requiere rol de administrador' });
+    }
+    next();
+}
 
-module.exports = { authMiddleware, requireAuth, createToken };
+module.exports = { authMiddleware, createToken, requireAuth, requireAdmin };

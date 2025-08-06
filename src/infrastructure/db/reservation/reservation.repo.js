@@ -10,6 +10,11 @@ async function update(reservation_id, user_id, data) {
     return result.affectedRows > 0;
 }
 
+async function erase(reservation_id, user_id) {
+    const [result] = await db.query('DELETE FROM reservations WHERE id = ? AND user_id = ?', [reservation_id, user_id]);
+    return result.affectedRows > 0;
+}
+
 async function getClientReservations(clientId) {
     const [rows] = await db.query('SELECT * FROM reservations WHERE user_id = ?', [clientId]);
     return rows;
@@ -20,5 +25,5 @@ async function getById(user_id, reservationId) {
     return rows[0];
 }
 
-module.exports = { save, update, getClientReservations, getById };
+module.exports = { save, update, erase, getClientReservations, getById };
 

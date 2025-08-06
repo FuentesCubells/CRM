@@ -1,5 +1,5 @@
 const express = require('express');
-const {authMiddleware, requireAuth} = require("../../../middlewares/auth.middleware");
+const {authMiddleware, requireAuth, requireAdmin} = require("../../../middlewares/auth.middleware");
 
 const authRepo = require("../../db/auth/auth.repo");
 
@@ -58,7 +58,14 @@ router.patch('/edit-reservation/:id', authMiddleware, requireAuth, async (req, r
     res.status(400).json({ error: err.message });
   }
 });
- 
+router.delete('/erase-reservation/:id', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const result = await eraseReservation(req.body.client.user_id, req.params.id);
+    res.status(200).json({ message: 'Erased Reservation', result: result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 
 
