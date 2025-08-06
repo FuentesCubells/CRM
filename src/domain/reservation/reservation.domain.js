@@ -1,4 +1,5 @@
 const Address = require("./address.domain");
+const { parseDate , calculateTotal} = require('../../utils/reservationUtils');
 const { v4: uuidv4 } = require('uuid');
 
 class Reservation {
@@ -27,14 +28,7 @@ class Reservation {
             created_at: new Date(),
         };
 
-        this.booking_details.total = this.calculateTotal();
-    }
-
-    calculateTotal() {
-        const nights = Math.ceil(
-            (this.booking_details.check_out - this.booking_details.check_in) / (1000 * 60 * 60 * 24)
-        );
-        return nights * this.booking_details.rate_per_night;
+        this.booking_details.total = calculateTotal(this.booking_details.check_in, this.booking_details.check_out, this.booking_details.rate_per_night);
     }
 }
 

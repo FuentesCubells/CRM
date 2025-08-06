@@ -30,5 +30,25 @@ async function getAllReservations() {
     return rows;
 }
 
-module.exports = { save, update, erase, getClientReservations, getById, getAllReservations };
+async function updateReservationStatus(reservationId, reservation_code, status) {
+    const [result] = await db.query('UPDATE reservations SET status = ? WHERE id = ? AND reservation_code = ?', [status, reservationId, reservation_code]);
+    return result.affectedRows > 0;
+}
+
+async function changeReservationDates(reservationId, reservation_code, data) {
+    const [result] = await db.query('UPDATE reservations SET check_in = ?, check_out = ?, total = ? WHERE id = ? AND reservation_code = ?', [data.check_in, data.check_out, data.total, reservationId, reservation_code]);
+    return result.affectedRows > 0;
+}
+
+async function getUnavailableDates() {
+    const [unavailableDates] = await db.query(`
+    SELECT check_in, check_out
+    FROM reservations
+    WHERE status = 'confirmed'
+  `);
+    
+    return unavailableDates;
+}
+
+module.exports = { save, update, erase, getClientReservations, getById, getAllReservations, getUnavailableDates, updateReservationStatus, changeReservationDates };
 

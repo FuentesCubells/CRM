@@ -3,6 +3,7 @@ const Reservation = require('../domain/reservation/reservation.domain');
 const reservationRepo = require('../infrastructure/db/reservation/reservation.repo');
 const addressRepo = require('../infrastructure/db/reservation/address.repo');
 
+const { calculateTotal } = require('../utils/reservationUtils');
 
 async function createReservation(data) {
   const reservation = new Reservation(data);
@@ -36,7 +37,7 @@ async function createReservation(data) {
 }
 async function editReservation(user_id, reservation_id, data) {
 
-  const existing = await reservationRepo.getById(user_id, reservation_id);
+  const existing = await reservationRepo.getById(user_id, reservation_id, data.reservation_code);
   if (!existing) {
     throw new Error('Reservation not found or does not belong to user');
   }
@@ -98,5 +99,40 @@ async function getAllReservations() {
   return result ? result : [];
 }
 
+async function changeReservationStatus(reservationId, reservation_code, status) {
+  const updated = await reservationRepo.updateReservationStatus(reservationId, reservation_code, status);
+  if (!updated) {
+    throw new Error('Error changing reservation status');
+  }
+  return true;
+}
+async function changeReservationDates(reservationId, reservation_code, data) {
+  const existing = await reservationRepo.getById(data.client.user_id, reservationId, reservation_code);
+  if (!existing) {
+    throw new Error('Reservation not found or does not belong to user');
+  }
 
-module.exports = { createReservation, editReservation, eraseReservation, getReservations, getReservationById, getAllReservations };
+  const total = calculateTotal(data.booking_details.check_in, data.booking_details.check_out, existing.rate_per_night);
+  const updated = await reservationRepo.changeReservationDates(reservationId, reservation_code, {
+    ...data.booking_details,
+    total
+  });
+  if (!updated) {
+    throw new Error('Error changing reservation dates');
+  }
+  return {reservation_code, total };
+}
+async function getUnavailableDates() {
+  const unavailableDates = await reservationRepo.getUnavailableDates();
+
+  const result = new Set();
+  unavailableDates.forEach(date => {
+    result.add(date.check_in.toISOString());
+    result.add(date.check_out.toISOString());
+  });
+
+  return result ? Array.from(result) : [];
+}
+
+
+module.exports = { createReservation, editReservation, eraseReservation, getReservations, getReservationById, getAllReservations, getUnavailableDates, changeReservationStatus, changeReservationDates };
