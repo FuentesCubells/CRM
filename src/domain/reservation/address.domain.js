@@ -3,8 +3,8 @@
 
 class Address {
 
-    constructor(data) {
-        this.user_id = data.user_id;
+    constructor(data, user_id) {
+        this.user_id = user_id;
         this.address = data.address;
         this.country = data.country;
         this.city = data.city;

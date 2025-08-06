@@ -1,13 +1,12 @@
 const Address = require("./address.domain");
-const Auth = require("../auth/auth.domain");
 
 class Reservation {
     constructor(data) {
-        this.client = new Auth(data.client);
-        this.address = new Address(data.address);
+        this.client = data.client;
+        this.address = new Address(data.address, data.client.user_id);
         this.booking_details = {
             room_id: data.booking_details.room_id,
-            user_id: data.booking_details.user_id,
+            user_id: data.client.user_id,
             check_in: new Date(data.booking_details.check_in),
             check_out: new Date(data.booking_details.check_out),
             adults: data.booking_details.adults || 1,

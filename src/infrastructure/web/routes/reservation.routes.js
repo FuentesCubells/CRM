@@ -1,4 +1,6 @@
 const express = require('express');
+const {authMiddleware, requireAuth} = require("../../../middlewares/auth.middleware");
+
 const authRepo = require("../../db/auth/auth.repo");
 
 const { createReservation, getReservations, getReservationById, editFullReservation, eraseReservation, getReservation, getAllReservations, getUnavailableDates } = require('../../../application/reservation.service');
@@ -6,40 +8,18 @@ const { route } = require('./auth.routes');
 
 const router = express.Router();
 
+// TODO: Before creating a reservation, check if the user is authenticated
+// and if the client exists in the database
+// This is a temporary solution, it should be done in the auth middleware
+// The front should manage firts the registration of the client
 router.post('/create-reservation', async (req, res) => {
   try {
-    const { client, address, booking_details, flags } = req.body;
-
     // Validación de datos obligatorios
-    if (!client || !address || !booking_details) {
+    if (!req.body.client || !req.body.address || !req.body.booking_details) {
       return res.status(400).json({ error: 'Faltan datos obligatorios' });
     }
 
-    let user;
-
-    if (flags?.hasAuth) {
-      user = await authRepo.findByEmail(client.email);
-      if (!user) {
-        return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
-    } else {
-      user = await authRepo.save(client);
-    }
-
-    // Crear nuevo objeto con datos completos
-    const data = {
-      client: user,
-      address: {
-        ...address,
-        user_id: user.id,
-      },
-      booking_details: {
-        ...booking_details,
-        user_id: user.id,
-      },
-    };
-
-    const result = await createReservation(data);
+    const result = await createReservation(req.body);
 
     res.status(201).json({ message: 'Created Reservation', id: result });
   } catch (err) {
@@ -51,7 +31,7 @@ router.post('/create-reservation', async (req, res) => {
 //There should be a middleware to authenticate the user
 //and get the client id from the token
 //This is a temporary solution
-router.post('/client-reservation-list', async (req, res) => {
+router.post('/client-reservation-list',authMiddleware, requireAuth, async (req, res) => {
   try {
 
     //Esto habría que cambiarlo por un middleware de autenticación
@@ -65,7 +45,7 @@ router.post('/client-reservation-list', async (req, res) => {
     res.status(400).json({ error: error.message || 'Error fetching client reservations' }); 
   }
 });
-router.get('/client-reservation-list/:id', async (req, res) => {
+router.get('/client-reservation-list/:id', authMiddleware, requireAuth, async (req, res) => {
   try {
     const result = await getReservationById(req.params.id);
     res.status(200).json({ message: 'Client Reservation Detail', data: result });

@@ -8,7 +8,7 @@ const { parseDate } = require('../utils/reservationUtils');
 async function createReservation(data) {
   const reservation = new Reservation(data);
 
-  if (!data.client.id) {
+  if (!data.client.user_id) {
     throw new Error('User not found');
   }
 
@@ -21,7 +21,7 @@ async function createReservation(data) {
     })
   ]);
 
-  if (!address || !reservationId || !data.client.id) {
+  if (!address || !reservationId || !data.client.user_id) {
     throw new Error('Error creating reservation');
   }
 
