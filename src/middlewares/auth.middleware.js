@@ -17,6 +17,15 @@ function authMiddleware(req, res, next) {
     }
 }
 
+function createToken(user) {
+    const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+    );
+    return token;
+}
+
 function requireAuth(req, res, next) {
     if (!req.user) {
         return res.status(401).json({ error: 'Acceso no autorizado' });
@@ -24,4 +33,4 @@ function requireAuth(req, res, next) {
     next();
 }
 
-module.exports = { authMiddleware, requireAuth };
+module.exports = { authMiddleware, requireAuth, createToken };

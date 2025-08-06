@@ -5,9 +5,14 @@ async function save(data) {
     return result.insertId;
 }
 
+async function update(user_id, data) {
+    const [result] = await db.query('UPDATE addresses SET ? WHERE user_id = ?', [data, user_id]);
+    return result.affectedRows > 0;
+}
+
 async function findByUserId(userId) {
     const [rows] = await db.query('SELECT * FROM addresses WHERE user_id = ?', [userId]);
     return rows[0];
 }
 
-module.exports = { save, findByUserId };
+module.exports = { save, update, findByUserId };

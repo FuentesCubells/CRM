@@ -28,13 +28,42 @@ async function createReservation(data) {
   return { reservation_id: reservationId };
 }
 
+async function editReservation(user_id, reservation_id, data) {
+  // 1. Obtener reserva original
+  const existing = await reservationRepo.getById(user_id, reservation_id);
+  if (!existing) {
+    throw new Error('Reservation not found or does not belong to user');
+  }
+
+  const updatedReservation = new Reservation({
+    ...data,
+    client: { user_id },
+  });
+
+  const updatedAddress = await addressRepo.update(existing.user_id, {
+    ...updatedReservation.address
+  });
+
+  const updated = await reservationRepo.update(existing.id, existing.user_id, updatedReservation.booking_details);
+
+  if (!updated || !updatedAddress) {
+    throw new Error('Error updating reservation');
+  }
+
+  return {
+    reservation_id,
+    ...updatedReservation.bookingDetails,
+    address: updatedReservation.address
+  };
+}
+
+
 async function getReservations(id) {
   const result = await reservationRepo.getClientReservations(id);
   return result ? result : [];
 }
-
-async function getReservationById(id) {
-  const result = await reservationRepo.getById(id);
+async function getReservationById(user_id , reservationId) {
+  const result = await reservationRepo.getById(user_id, reservationId);
   return result ? result : [];
 }
 
@@ -89,4 +118,4 @@ async function getReservationById(id) {
 //   return unavailableDates;
 // }
 
-module.exports = { createReservation, getReservations, getReservationById };
+module.exports = { createReservation, editReservation, getReservations, getReservationById };
