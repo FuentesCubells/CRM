@@ -8,6 +8,8 @@ import UIInputText from '../../../ui/inputs/text-input.ui';
 import UIInputPassword from '../../../ui/inputs/password-input.ui';
 import { Button } from "primereact/button";
 
+import '../auth.component.scss';
+
 const schema = yup.object({
     email: yup.string().email('Correo inválido').required('Correo requerido').default(''),
     password: yup.string().min(6, 'Mínimo 6 caracteres').required('Contraseña requerida').default(''),
@@ -16,7 +18,11 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 
-const LoginComponent: React.FC = () => {
+interface LoginComponentProps {
+  hasAuthCallback: (value: boolean) => void;
+}
+
+const LoginComponent: React.FC<LoginComponentProps> = ({ hasAuthCallback }) => {
 
     const {
         register,
@@ -43,8 +49,18 @@ const LoginComponent: React.FC = () => {
         }
     };
 
+
+    const hasAuth = () => {
+        hasAuthCallback(false);
+    }
+
     return (
         <form className="auth-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+
+            <section className="auth-form__header">
+                <h1 className="auth-form__title">Sign In</h1>
+                <p className="auth-form__subtitle">Login to your account</p>
+            </section>
 
             <UIInputText
                 id="email"
@@ -62,7 +78,10 @@ const LoginComponent: React.FC = () => {
                 error={errors.password?.message}
             />
 
-            <Button type="submit" label="Login" disabled={!isValid} />
+            <fieldset className="auth-form__actions">
+                <Button type="submit" label="Sign In" disabled={!isValid} />
+                <Button type="button" label="Register" outlined onClick={() => hasAuth()} />
+            </fieldset>
         </form>
     )
 };

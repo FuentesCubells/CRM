@@ -1,11 +1,12 @@
 import './App.css'
-import CRMAuthView from './views/auth.view'
+
+import AuthView from './views/auth.view'
 
 function App() {
 
   return (
     <>
-      <CRMAuthView></CRMAuthView>
+      <AuthView></AuthView>
     </>
   )
 }
