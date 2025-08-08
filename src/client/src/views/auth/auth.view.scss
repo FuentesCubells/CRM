@@ -1,0 +1,14 @@
+.auth-view{
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    &__swiper {
+        max-width: 50rem;
+        width: 100%;
+    }
+}

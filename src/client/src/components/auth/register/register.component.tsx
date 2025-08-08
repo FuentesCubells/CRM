@@ -24,7 +24,7 @@ const schema = yup.object({
 type FormData = yup.InferType<typeof schema>;
 
 
-const RegisterComponent: React.FC<any> = ( {hasAuthCallback} ) => {
+const RegisterComponent: React.FC<any> = ({ hasAuthCallback }) => {
 
     const {
         register,
@@ -66,22 +66,24 @@ const RegisterComponent: React.FC<any> = ( {hasAuthCallback} ) => {
                 <p className="auth-form__subtitle">Create a new account</p>
             </section>
 
-            <UIInputText
-                id="first_name"
-                label='Nombre'
-                placeholder='Tu nombre'
-                registration={register('first_name')}
-                error={errors.first_name?.message}
-            />
+            <section className="auth-form__input-two-columns">
+                <UIInputText
+                    id="first_name"
+                    label='Nombre'
+                    placeholder='Tu nombre'
+                    registration={register('first_name')}
+                    error={errors.first_name?.message}
+                />
 
-            <UIInputText
-                id="last_name"
-                label='Apellido'
-                placeholder='Tu apellido'
-                registration={register('last_name')}
-                error={errors.last_name?.message}
-            />
-            
+                <UIInputText
+                    id="last_name"
+                    label='Apellido'
+                    placeholder='Tu apellido'
+                    registration={register('last_name')}
+                    error={errors.last_name?.message}
+                />
+            </section>
+
             <UIInputText
                 id="email"
                 label='Email'
@@ -90,21 +92,23 @@ const RegisterComponent: React.FC<any> = ( {hasAuthCallback} ) => {
                 error={errors.email?.message}
             />
 
-            <UIInputPassword
-                id="password"
-                label='Contraseña'
-                placeholder='Contraseña'
-                registration={register('password')}
-                error={errors.password?.message}
-            />
+            <section className='auth-form__input-two-columns'>
+                <UIInputPassword
+                    id="password"
+                    label='Contraseña'
+                    placeholder='Contraseña'
+                    registration={register('password')}
+                    error={errors.password?.message}
+                />
 
-            <UIInputPassword
-                id="confirm_password"
-                label='Confirmar Contraseña'
-                placeholder='Confirmar Contraseña'
-                registration={register('confirm_password')}
-                error={errors.confirm_password?.message}
-            />
+                <UIInputPassword
+                    id="confirm_password"
+                    label='Confirmar Contraseña'
+                    placeholder='Confirmar Contraseña'
+                    registration={register('confirm_password')}
+                    error={errors.confirm_password?.message}
+                />
+            </section>
 
             <fieldset className="auth-form__actions">
                 <Button type="submit" label="Register" disabled={!isValid} />

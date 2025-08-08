@@ -4,15 +4,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import './auth.view.scss';
 import 'swiper/swiper-bundle.css'
 
-import LoginComponent from '../components/auth/login/login.component';
-import RegisterComponent from '../components/auth/register/register.component';
+import LoginComponent from '../../components/auth/login/login.component';
+import RegisterComponent from '../../components/auth/register/register.component';
 
 
 const AuthView: React.FC = () => {
     const swiperRef = useRef<any>(null);
 
     function hasAuthCallBack(hasAuthCalback: boolean) {
-        console.log('called');
         if (hasAuthCalback) {
             // Ir al login
             swiperRef.current?.slideTo(0);
@@ -23,8 +22,9 @@ const AuthView: React.FC = () => {
     }
 
     return (
-        <div className="auth-view">
+        <section className="auth-view">
             <Swiper
+                className='auth-view__swiper'
                 onSwiper={(swiper: any) => (swiperRef.current = swiper)}
                 spaceBetween={50}
                 slidesPerView={1}
@@ -37,7 +37,7 @@ const AuthView: React.FC = () => {
                     <RegisterComponent hasAuthCallback={hasAuthCallBack} />
                 </SwiperSlide>
             </Swiper>
-        </div>
+        </section>
     );
 };
 

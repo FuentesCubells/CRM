@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -19,11 +20,11 @@ type FormData = yup.InferType<typeof schema>;
 
 
 interface LoginComponentProps {
-  hasAuthCallback: (value: boolean) => void;
+    hasAuthCallback: (value: boolean) => void;
 }
 
 const LoginComponent: React.FC<LoginComponentProps> = ({ hasAuthCallback }) => {
-
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -34,16 +35,16 @@ const LoginComponent: React.FC<LoginComponentProps> = ({ hasAuthCallback }) => {
             mode: 'onChange',
             reValidateMode: 'onChange',
             defaultValues: {
-                email: '',
-                password: '',
+                email: 'pedro.garcia@example.com',
+                password: 'testPassword',
             },
         }
     );
 
     const onSubmit = async (data: FormData) => {
         try {
-            const result = await login(data);
-            console.log('Login successful:', result);
+            await login(data);
+            navigate("/dashboard");
         } catch (error) {
             console.error('Login failed:', error);
         }

@@ -12,6 +12,7 @@ export const login = async (credentials: LoginCredentials) => {
   try {
     const request = parseLoginRequest(credentials);
     const response = await axios.post('/api/auth/login', request);
+    saveToken(response.data.token);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || { message: 'Login failed' };
@@ -26,15 +27,23 @@ export const registerUser = async (credentials: LoginCredentials) => {
   } catch (error: any) {
     throw error.response?.data || { message: 'Registration failed' };
   }
-}
+};
 
+export const getToken = () => {
+  return localStorage.getItem("authToken");
+};
+
+
+function saveToken( token: string): void {
+   localStorage.setItem("authToken", token);
+}
 
 function parseLoginRequest( credentials: LoginCredentials ) {
   return {
     username: credentials.email,
     password: credentials.password,
   };
-}
+};
 
 function parseRegisterRequest( credentials: LoginCredentials ) {
   return {
@@ -43,4 +52,4 @@ function parseRegisterRequest( credentials: LoginCredentials ) {
     email: credentials.email,
     password: credentials.password,
   };
-}
+};
