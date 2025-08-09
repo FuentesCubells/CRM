@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const dbPool = require('../db/mysql');
+const cookieParser = require('cookie-parser');
 
 class Server {
 
@@ -41,6 +42,7 @@ class Server {
 
         this.app.use(limiter);
         // this.app.use(cors());
+        this.app.use(cookieParser());
         this.app.use(express.json());
         this.app.use(helmet());
     }

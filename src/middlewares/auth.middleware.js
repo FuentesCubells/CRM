@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 function authMiddleware(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Token no proporcionado o formato incorrecto' });
-    }
+    // const authHeader = req.headers.authorization;
 
-    const token = authHeader.split(' ')[1];
+    // if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    //     return res.status(401).json({ error: 'Token no proporcionado o formato incorrecto' });
+    // }
+
+    const token = req.cookies.token;
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -17,16 +18,23 @@ function authMiddleware(req, res, next) {
     }
 }
 
-function createToken(user) {
+function createToken(res, user) {
     const token = jwt.sign(
-        { 
-            id: user.id, 
+        {
+            id: user.id,
             email: user.email,
             role: user.role
         },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
     );
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+        maxAge: 60 * 60 * 1000 
+    });
     return token;
 }
 

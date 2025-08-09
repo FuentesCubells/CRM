@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
     try {
         const user = await registerUser(req.body);
-        const token = createToken(user);
+        createToken(user);
         res.status(201).json({ user, token });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -21,8 +21,8 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
-        const token = createToken(user);
-        res.status(200).json({ user, token });
+       createToken(res, user);
+        res.status(200).json({ user });
     } catch (err) {
         res.status(401).json({ error: err.message });
     }
