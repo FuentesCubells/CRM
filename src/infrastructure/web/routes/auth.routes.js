@@ -1,6 +1,8 @@
 const express = require('express');
 const {createToken} = require("../../../middlewares/auth.middleware");
 const {registerUser, loginUser, changePassword} = require('../../../application/auth.service');
+const {authMiddleware} = require("../../../middlewares/auth.middleware");
+
 
 const router = express.Router();
 
@@ -26,6 +28,10 @@ router.post('/login', async (req, res) => {
     } catch (err) {
         res.status(401).json({ error: err.message });
     }
+});
+
+router.get('/check-auth', authMiddleware, (req, res) => {
+  res.json({ user: req.user });
 });
 
 router.post('/change-password', async (req, res) => {

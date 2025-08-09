@@ -4,7 +4,7 @@ import './App.css';
 
 import AuthView from './views/auth/auth.view';
 import ProtectedRoute from "./components/auth/protected-routes/protected-routes.component";
-import DashboarbView from "./views/dashboard/dashboard.component";
+import DashboarbView from "./views/dashboard/dashboard.view";
 
 function App() {
 

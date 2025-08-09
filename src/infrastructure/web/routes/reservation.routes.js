@@ -4,7 +4,7 @@ const {authMiddleware, requireAuth, requireAdmin} = require("../../../middleware
 const authRepo = require("../../db/auth/auth.repo");
 
 const { createReservation, editReservation, getReservations, getReservationById, eraseReservation, getAllReservations, getUnavailableDates, changeReservationStatus, changeReservationDates } = require('../../../application/reservation.service');
-const { route } = require('./auth.routes');
+
 
 const router = express.Router();
 

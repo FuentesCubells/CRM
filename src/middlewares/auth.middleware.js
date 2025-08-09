@@ -1,12 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 function authMiddleware(req, res, next) {
-    // const authHeader = req.headers.authorization;
-
-    // if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    //     return res.status(401).json({ error: 'Token no proporcionado o formato incorrecto' });
-    // }
-
     const token = req.cookies.token;
 
     try {

@@ -11,8 +11,7 @@ interface LoginCredentials {
 export const login = async (credentials: LoginCredentials) => {
   try {
     const request = parseLoginRequest(credentials);
-    const response = await axios.post('/api/auth/login', request);
-    saveToken(response.data.token);
+    const response = await axios.post('/api/auth/login', request, { withCredentials: true });
     return response.data;
   } catch (error: any) {
     throw error.response?.data || { message: 'Login failed' };
@@ -29,14 +28,16 @@ export const registerUser = async (credentials: LoginCredentials) => {
   }
 };
 
-export const getToken = () => {
-  return localStorage.getItem("authToken");
+export const checkAuth = async () => {
+  try {
+    const res = await axios.get("/api/auth/check-auth", {
+      withCredentials: true
+    });
+    return res.data.user;
+  } catch {
+    return null;
+  }
 };
-
-
-function saveToken( token: string): void {
-   localStorage.setItem("authToken", token);
-}
 
 function parseLoginRequest( credentials: LoginCredentials ) {
   return {
