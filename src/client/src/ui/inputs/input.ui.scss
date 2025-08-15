@@ -15,13 +15,19 @@
     }
 
     input,
+    span,
     div {
         width: 100%;
     }
 
-    input {
+    .p-dropdown-trigger {
+        display: none;
+    }
+    
+    input, div {
         border-radius: 0;
         border: 1px solid $border-light;
+        box-shadow: none;
 
         &::placeholder {
             color: $placeholder-color;

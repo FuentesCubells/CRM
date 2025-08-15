@@ -114,6 +114,7 @@
 }
 .reservation-card:hover{
     border: 1px solid $border-dark;
+    box-shadow: 0 2px 6px $box-shadow-color;
     cursor: pointer;
 }
 

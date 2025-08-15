@@ -27,12 +27,15 @@ const DashboarbView: React.FC = () => {
     }, []);
 
     const handleViewDetails = async (id: number, userId: number, reservation_code: string) => {
-        const reservation_details = await getReservationByCode(id, userId, reservation_code);
-        setReservationDetail(reservation_detail);
-        console.log(reservation_details)
-        if (reservation_details.data) {
+        const reservation_detail = await getReservationByCode(id, userId, reservation_code);
+        if (reservation_detail.data) {
+            setReservationDetail(reservation_detail.data);
             setOpenAside(true);
         }
+    }
+
+    const handleCloseAside = () => {
+        setOpenAside(false);
     }
 
     return (
@@ -49,7 +52,7 @@ const DashboarbView: React.FC = () => {
             </section>
             {openAside &&
                 <AsideUI>
-                    <DetailFormComponent reservation_details={reservation_detail}></DetailFormComponent>
+                    <DetailFormComponent closeAside={handleCloseAside} reservation_details={reservation_detail}></DetailFormComponent>
                 </AsideUI>
             }
         </section>

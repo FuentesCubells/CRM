@@ -48,7 +48,6 @@ const RegisterComponent: React.FC<any> = ({ hasAuthCallback }) => {
     const onSubmit = async (data: FormData) => {
         try {
             const result = await registerUser(data);
-            console.log('Registration successful:', result);
         } catch (error) {
             console.error('Registration failed:', error);
         }
