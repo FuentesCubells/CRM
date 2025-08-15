@@ -26,32 +26,33 @@ const DashboarbView: React.FC = () => {
         fetchData();
     }, []);
 
-    const handleViewDetails = async ( id: number, userId: number,  reservation_code: string ) => {
+    const handleViewDetails = async (id: number, userId: number, reservation_code: string) => {
         const reservation_details = await getReservationByCode(id, userId, reservation_code);
         setReservationDetail(reservation_detail);
         console.log(reservation_details)
-        if( reservation_details.data ) {
+        if (reservation_details.data) {
             setOpenAside(true);
         }
     }
 
     return (
-        <>
-            <section className='dashboard-view__cards-wrapper'>
-                {reservations.map(reservation => (
-                    <ReservationCard
-                        key={reservation.id}
-                        reservation={reservation}
-                        onViewDetails={handleViewDetails}
-                    />
-                ))}
+        <section className='dashboard-view'>
+            <p className='dashboard-view__info'>{reservations.length} {'reservas encontradas'.toUpperCase()}</p>
+
+            <section className='dashboard-view__cards-wrapper'>                {reservations.map(reservation => (
+                <ReservationCard
+                    key={reservation.id}
+                    reservation={reservation}
+                    onViewDetails={handleViewDetails}
+                />
+            ))}
             </section>
-            { openAside && 
+            {openAside &&
                 <AsideUI>
                     <DetailFormComponent reservation_details={reservation_detail}></DetailFormComponent>
-                </AsideUI> 
+                </AsideUI>
             }
-        </>
+        </section>
     )
 }
 

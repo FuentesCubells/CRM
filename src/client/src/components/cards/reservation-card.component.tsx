@@ -24,45 +24,59 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, onViewDe
     ).format(parseInt(reservation.total));
 
     return (
-        <article className="reservation-card">
+        <article className="reservation-card" onClick={() => onViewDetails && onViewDetails(reservation.id, reservation.user_id, reservation.reservation_code)}>
 
-            <header className="reservation-card__dates">
-                <span className="date-label">Estancia</span>
-                <span className="date-range">
-                    {new Date(reservation.check_in).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    {" — "}
-                    {new Date(reservation.check_out).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </span>
-            </header>
+            <figure className="reservation-card__figure">
+                <img></img>
+            </figure>
 
-            <section className="reservation-card__data">
-
-                <article className="reservation-card__client">
-                    {/* <h3 className="reservation-card__client">{reservation.client_name}</h3> */}
-                    <h3>Pedro Domingo</h3>
+            <header className="reservation-card__header">
+                <article>
+                    <span>ID - {reservation.reservation_code}</span>
                     <span className={`status-badge ${statusClass}`}>
                         {reservation.status}
                     </span>
                 </article>
+                <h3>Pedro Domingo</h3>
+            </header>
+
+            <section className="reservation-card__data">
+                <article className="reservation-card__room">
+                    <span>{'Habitacion'.toUpperCase()}</span>
+                    <p>{'Suite Deluxe'.toUpperCase()}</p>
+                </article>
+
+                <section className="reservation-card__dates">
+                    <article>
+                        <span>{'Check In'.toUpperCase()}</span>
+                        <span>
+                            {new Date(reservation.check_in).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </span>
+                    </article>
+                    <article>
+                        <span>{'Check Out'.toUpperCase()}</span>
+                        <span>
+                            {new Date(reservation.check_out).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </span>
+                    </article>
+                </section>
 
                 <section className="reservation-card__info">
-                    <article className="reservation-card__total">
-                        <p><strong>Total:</strong> {formattedTotal} </p>
+                    <article>
+                        <span>{'Huespedes'.toUpperCase()}</span>
+                        <span>
+                            {reservation.adults + reservation.children} 
+                        </span>
                     </article>
-
-                    <article className="reservation-card__occupancy">
-                        <p><strong>Guests:</strong> {reservation.adults + reservation.children} </p>
+                    <article>
+                        <span>{'Total'.toUpperCase()}</span>
+                        <span>
+                            {formattedTotal} 
+                        </span>
                     </article>
                 </section>
             </section>
 
-            <footer className="reservation-card__footer">
-                <button
-                    className="btn-details"
-                    onClick={() => onViewDetails && onViewDetails(reservation.id, reservation.user_id, reservation.reservation_code)}>
-                    Ver detalles
-                </button>
-            </footer>
         </article>
     );
 };
