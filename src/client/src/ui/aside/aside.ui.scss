@@ -1,0 +1,13 @@
+.aside-wrapper {
+    padding: 2rem;
+    
+    width: 80vw;
+    height: 100vh;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 999;
+
+    background-color: $white;
+}

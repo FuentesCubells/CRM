@@ -47,9 +47,9 @@ router.post('/client-reservation-list', authMiddleware, requireAuth, async (req,
     res.status(400).json({ error: error.message || 'Error fetching client reservations' }); 
   }
 });
-router.get('/client-reservation-list/:id', authMiddleware, requireAuth, async (req, res) => {
+router.post('/client-reservation-list/:id', authMiddleware, requireAuth, async (req, res) => {
   try {
-    const result = await getReservationById(req.user.id, req.params.id, req.body.reservation_code);
+    const result = await getReservationById(req.body.user_id, req.params.id, req.body.reservation_code);
     res.status(200).json({ message: 'Client Reservation Detail', success: true, data: result });
   } catch (err) {
     res.status(400).json({ error: err.message });

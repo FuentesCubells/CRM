@@ -22,6 +22,7 @@ async function getClientReservations(clientId) {
 
 async function getById(user_id, reservationId, reservation_code) {
     const [rows] = await db.query('SELECT * FROM reservations WHERE id = ? AND user_id = ? AND reservation_code = ?', [reservationId, user_id, reservation_code]);
+    console.log(rows)
     return rows[0];
 }
 

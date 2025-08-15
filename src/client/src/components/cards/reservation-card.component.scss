@@ -1,0 +1,151 @@
+.reservation-card {
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    letter-spacing: 0.01em;
+
+    // Fechas de la estancia
+    &__dates {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .date-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #666;
+        }
+
+        .date-range {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            font-size: 1rem;
+            font-weight: 500;
+            color: #111;
+        }
+    }
+
+    // Bloque de datos cliente + estado
+    &__data {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+
+        @media (max-width: 480px) {
+            flex-direction: column;
+        }
+    }
+
+    &__client {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        h3 {
+            text-align: left;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111;
+
+            white-space: nowrap;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    // Precio total
+    &__total {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #111;
+
+        strong {
+            font-weight: 600;
+        }
+    }
+
+    // Ocupación
+    &__occupancy {
+        font-size: 0.85rem;
+        color: #444;
+
+        strong {
+            font-weight: 500;
+            color: #111;
+        }
+    }
+
+    // Footer con botones
+    &__footer {
+        width: 100%;
+        
+        display: flex;
+        justify-content: end;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+}
+
+// Badge de estado
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid currentColor;
+    align-self: flex-start;
+
+    &.status--pending {
+        color: #e67e22;
+        border-color: #e67e22;
+    }
+
+    &.status--confirmed {
+        color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    &.status--cancelled {
+        color: #c0392b;
+        border-color: #c0392b;
+    }
+}
+
+// Botones
+.btn-details {
+    background: none;
+    border: 1px solid #111;
+    color: #111;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &:hover {
+        background: #111;
+        color: #fff;
+    }
+}
