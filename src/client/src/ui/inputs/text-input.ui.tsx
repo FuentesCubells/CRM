@@ -6,7 +6,7 @@ const UIInputText: React.FC<UIInputProps> = ({ id, label, placeholder, registrat
   
   return (
     <fieldset className="ui-input-wrapper">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{label?.toUpperCase()}</label>
       <InputText
         id={id}
         aria-describedby={`${id}-help`}
@@ -19,7 +19,7 @@ const UIInputText: React.FC<UIInputProps> = ({ id, label, placeholder, registrat
         ref={registration.ref}
       />
       <small id={`${id}-help`} className={error ? 'p-error' : ''}>
-        {error || `Introduce tu ${label?.toLowerCase()}`}
+        {error}
       </small>
     </fieldset>
   );

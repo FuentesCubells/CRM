@@ -13,7 +13,7 @@ const UIInputPassword: React.FC<UIInputProps> = ({
 }) => {
   return (
     <fieldset className="ui-input-wrapper">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{label.toUpperCase()}</label>
       <Password
         id={id}
         placeholder={placeholder}
@@ -28,7 +28,7 @@ const UIInputPassword: React.FC<UIInputProps> = ({
         inputRef={registration.ref}
       />
       <small id={`${id}-help`} className={error ? 'p-error' : ''}>
-        {error || `Introduce tu ${label?.toLowerCase()}`}
+        {error}
       </small>
     </fieldset>
   );

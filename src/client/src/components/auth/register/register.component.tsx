@@ -111,9 +111,13 @@ const RegisterComponent: React.FC<any> = ({ hasAuthCallback }) => {
             </section>
 
             <fieldset className="auth-form__actions">
-                <Button type="submit" label="Register" disabled={!isValid} />
-                <Button type="button" label="Already have an account?" outlined onClick={() => hasAuth()} />
+                <Button type="submit" label="Register" icon="pi pi-user-plus" disabled={!isValid} />
             </fieldset>
+
+            <footer className="auth-form__footer">
+                <p>¿Tienes una cuenta?</p>
+                <p onClick={() => hasAuth()}>Iniciar sesión</p>
+            </footer>
         </form>
     )
 };

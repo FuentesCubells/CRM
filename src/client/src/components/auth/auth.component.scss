@@ -1,46 +1,79 @@
 .auth-form {
     padding: 2rem 1rem;
-
     width: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
     gap: 1rem;
-
-    background-color: $white;
-    border-radius: $border_radius;
+    background-color: $background-light;
+    border-radius: 0;
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
 
     &__header {
+        padding: 0.5rem;
         width: 100%;
-
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
-        color: $text_black;
+        gap: 0.5rem;
+        color: $text-black;
+        border-bottom: 1px solid $border-light;
     }
 
     &__actions {
         padding: 0.5rem 1rem;
         width: 100%;
-
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-
         border: none;
 
         button {
             width: 100%;
+            color: $text-black;
+            border-radius: 0;
+            border: 1px solid $border-dark;
+            background-color: transparent;
+            transition: background-color 0.5s ease;
+
+            &:hover {
+                color: $text-light;
+                background-color: $background-dark;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+
+    &__footer {
+        padding: 1rem;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.8rem;
+        border-top: 1px solid $border-light;
+
+        p:nth-child(1) {
+            color: $text-black;
+        }
+
+        p:nth-child(2):hover {
+            text-decoration: underline;
+            cursor: pointer;
         }
     }
 
     &__input-two-columns {
         width: 100%;
-
         display: flex;
         flex-direction: row;
         justify-content: start;
@@ -48,11 +81,18 @@
         gap: 1rem;
 
         @media (max-width: 768px) {
-            flex-direction: column; 
+            flex-direction: column;
         }
 
         >* {
-            flex: 1; 
+            flex: 1;
         }
     }
 }
+
+.auth-form:hover {
+    border-radius: 0;
+    border: 1px solid $border-dark;
+    box-shadow: 0 2px 6px $box-shadow-color;
+}
+

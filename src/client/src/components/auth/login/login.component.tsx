@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -59,13 +59,13 @@ const LoginComponent: React.FC<LoginComponentProps> = ({ hasAuthCallback }) => {
         <form className="auth-form" onSubmit={handleSubmit(onSubmit)} noValidate>
 
             <section className="auth-form__header">
-                <h1 className="auth-form__title">Sign In</h1>
-                <p className="auth-form__subtitle">Login to your account</p>
+                <h2 className="auth-form__title">Iniciar Sesión</h2>
+                <p className="auth-form__subtitle">Accede a tu cuenta para continuar</p>
             </section>
 
             <UIInputText
                 id="email"
-                label='Email'
+                label='Dirección De Email'
                 placeholder='ejemplo@email.com'
                 registration={register('email')}
                 error={errors.email?.message}
@@ -80,9 +80,14 @@ const LoginComponent: React.FC<LoginComponentProps> = ({ hasAuthCallback }) => {
             />
 
             <fieldset className="auth-form__actions">
-                <Button type="submit" label="Sign In" disabled={!isValid} />
-                <Button type="button" label="Register" outlined onClick={() => hasAuth()} />
+                <Button type="submit" label="Iniciar Sesión" icon="pi pi-sign-in" disabled={!isValid} />
+                {/* <Button type="button" label="Register" outlined onClick={() => hasAuth()} /> */}
             </fieldset>
+
+            <footer className="auth-form__footer">
+                <p>¿No tienes cuenta?</p>
+                <p onClick={() => hasAuth()}>Crear Cuenta</p>
+            </footer>
         </form>
     )
 };

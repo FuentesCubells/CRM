@@ -1,20 +1,36 @@
+
 .ui-input-wrapper {
     padding: 0.5rem 1rem;
-
     width: 100%;
-
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: center;
     gap: 0.5rem;
-
     border: none;
-    color: $text_black;
+    color: $text-black;
+
+    label {
+        font-size: 0.8rem;
+    }
 
     input,
     div {
         width: 100%;
+    }
+
+    input {
+        border-radius: 0;
+        border: 1px solid $border-light;
+
+        &::placeholder {
+            color: $placeholder-color;
+        }
+
+        &:focus {
+            border: 1px solid $border-dark;
+            box-shadow: none;
+        }
     }
 
     button {
